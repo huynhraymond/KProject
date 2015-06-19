@@ -5,4 +5,8 @@ img/
 .idea
 build/
 dist/
+<<<<<<< HEAD
 js/ng/*.demo.js
+=======
+js/ng/*.demo.js
+>>>>>>> c1cef7cb21a528392303df033007276e7b41151f
