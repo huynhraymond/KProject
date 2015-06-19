@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html ng-app="kiddifiedApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Kiddified</title>
+    <link href="css/application.min.css" rel="stylesheet">
+
+    <script>
+        /* yeah we need this empty stylesheet here. It's cool chrome & chromium fix
+         chrome fix https://code.google.com/p/chromium/issues/detail?id=167083
+         https://code.google.com/p/chromium/issues/detail?id=332189
+         */
+    </script>
+
+</head>
+
+<body class="ng-scope chat-sidebar-container pace-done nav-collapsed nav-static"
+      data-ng-controller="MainAppController"
+      data-sn-demo="" data-ng-class="{'nav-static': app.state['nav-static']}">
+      <!--
+      'login-page': loginPage, 'error-page': errorPage}">       -->
+
+<!--
+<body class="ng-scope pace-done nav-collapsed nav-static" data-ng-controller="MainAppController">
+-->
+
+<div class="app" id="app" data-ui-view></div>
+
+
+<script src="/jquery/dist/jquery.min.js"></script>
+<script src="/angular/angular.min.js"></script>
+<script src="/angular-ui-router/release/angular-ui-router.min.js"></script>
+<script src="/ngstorage/ngStorage.min.js"></script>
+<script src="/angular-resource/angular-resource.min.js"></script>
+<script src="/angular-ui-utils/event.min.js"></script>
+<script src="/angular-animate/angular-animate.min.js"></script>
+<script src="/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+<script src="/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+<script src="/angular-bootstrap-select/build/angular-bootstrap-select.min.js"></script>
+
+<!-- page specific angular libs. may be removed -->
+<script src="datatables/media/js/jquery.dataTables.js"></script>
+<script src="/angular-datatables/dist/angular-datatables.min.js"></script>
+<script src="/angular-datatables/dist/plugins/bootstrap/angular-datatables.bootstrap.min.js"></script>
+<script src="/angular-ui-calendar/src/calendar.js"></script>
+
+<script src="/angular-file-upload/dist/angular-file-upload.min.js"></script>
+
+<!-- common libs. previous bootstrap-sass version was used, but due to a need to have single compiled file using bootstrap's version -->
+<script src="/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/slimScroll/jquery.slimscroll.min.js"></script>
+<script src="/widgster/widgster.js"></script>
+<script data-pace-options='{ "target": ".content-wrap", "ghostTime": 1000 }' src="/pace.js/pace.min.js"></script>
+<script src="/jquery-touchswipe/jquery.touchSwipe.min.js"></script>
+
+<!-- common app js -->
+<script src="js/ng/app.js"></script>
+<script src="js/ng/controllers.js"></script>
+<script src="js/ng/services.js"></script>
+<script src="js/ng/directives.js"></script>
+
+<!--
+<script src="js/ng/directives.demo.js"></script>
+<script src="js/ng/controllers.demo.js"></script>
+-->
+
+
+<!-- page specific libs -->
+</body>
+</html>

@@ -1,0 +1,95 @@
+
+<div class="row" ng-controller="RegisterController">
+    <div class="col-md-8 col-md-offset-1">
+        <section class="widget">
+            <header>
+                <h1 class="fw-semi-bold">Seeker Registration Form</h1>
+            </header>
+            <div class="widget-body">
+                <form class="form-horizontal form-label-left" data-ui-jq="parsley"
+                      data-parsley-priority-enabled="false" novalidate="novalidate">
+                    <fieldset class="seeker-pre-validation">
+                        <legend>
+                            Please provide all the information
+                        </legend>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">Email</label>
+                            <div class="col-sm-6 input-group">
+                                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                <input type="email" name="email" class="form-control"
+                                       data-parsley-trigger="change" data-parsley-validation-threshold="1"
+                                       required="required" ng-model="registeredUser.email">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">Phone</label>
+                            <div class="col-sm-6 input-group">
+                                <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                                <input type="text" data-ui-jq="inputmask" data-ui-options="{mask: '(999) 999-9999'}"
+                                        class="form-control" required="required" ng-model="registeredUser.tel">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-success" ng-click="validate()">Validate</button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="help-block">
+                            Click validate to obtain passcode id through text and/or email
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="seeker-post-validation">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">Passcode Id</label>
+                            <div class="col-sm-6 input-group">
+                                <span class="input-group-addon"><i class="fa fa-qrcode"></i></span>
+                                <input type="text" name="passcode" class="form-control"
+                                       required="required" ng-model="registeredUser.passcode">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">Name</label>
+                            <div class="col-sm-6 input-group">
+                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                <input type="text" name="name" class="form-control"
+                                       required="required" ng-model="registeredUser.name">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">User Name</label>
+                            <div class="col-sm-6 input-group">
+                                <span class="input-group-addon"><i class="fa fa-user-secret"></i></span>
+                                <input type="text" name="username" class="form-control" required="required"
+                                    data-parsley-trigger="change" data-parsley-minlength="6" ng-model="registeredUser.username">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">New Password</label>
+                            <div class="col-sm-6 input-group">
+                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                <input type="password" id="password" class="form-control" ng-model="registeredUser.password"
+                                       data-parsley-trigger="change" data-parsley-minlength="6" required="required">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">Confirm Password</label>
+                            <div class="col-sm-6 input-group">
+                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                <input type="password" name="password1" class="form-control" ng-model="registeredUser.password1"
+                                       data-parsley-trigger="change" data-parsley-minlength="6"
+                                       data-parsley-equalto="#password" required="required">
+                            </div>
+                        </div>
+                        <div class="col-sm-offset-4 col-sm-7">
+                            <button type="button" class="btn btn-primary" ng-click="register()">Register</button>
+                            <button type="button" class="btn btn-inverse" ng-click="cancel()">Cancel</button>
+                        </div>
+
+                    </fieldset>
+
+                </form>
+            </div>
+        </section>
+    </div>
+</div>

@@ -1,0 +1,44 @@
+<!-- need this .js class to initiate slimscroll -->
+<div class="js-sidebar-content">
+    <header class="logo hidden-xs">
+        <a data-ui-sref="app.page({ page: 'landing', child: null })"  data-tooltip-placement="right" data-tooltip="Home">
+            {{app.name}}</a>
+    </header>
+
+    <!-- main notification links are placed inside of .sidebar-nav -->
+    <ul class="sidebar-nav">
+
+        <!-- Dashboard -->
+        <li>
+            <a class="collapsed" data-target="#sidebar-dashboard" data-toggle="collapse" data-parent="#sidebar">
+                    <span class="icon">
+                        <i class="fa fa-desktop"></i>
+                    </span>
+                Dashboard
+                <i class="toggle fa fa-angle-down"></i>
+            </a>
+            <ul id="sidebar-dashboard" class="collapse">
+                <li><a data-ui-sref="app.page({ page: 'dashboard', child: null })">Dashboard</a></li>
+                <li><a data-ui-sref="app.page({ page: 'gallery', child: null })">Gallery</a></li>
+                <li><a data-ui-sref="app.page({ page: 'restricted/calendar', child: null })">Calendar</a></li>
+                <li><a data-ui-sref="app.page({ page: 'uploadImages', child: null })">Upload Images</a></li>
+            </ul>
+        </li>
+
+        <!-- Registrations -->
+        <li>
+            <a class="collapsed" data-target="#sidebar-forms" data-toggle="collapse" data-parent="#sidebar">
+                    <span class="icon">
+                        <i class="glyphicon glyphicon-align-right"></i>
+                    </span>
+                Registrations
+                <i class="toggle fa fa-angle-down"></i>
+            </a>
+            <ul id="sidebar-forms" class="collapse">
+                <li><a data-ui-sref="app.page({ page: 'seeker', child: null })">Seeker</a></li>
+                <li><a data-ui-sref="app.page({ page: 'provider', child: null })">Provider</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
