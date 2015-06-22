@@ -294,7 +294,7 @@ appControllers.controller('LoginController', ['$scope', 'AjaxServices', 'MsgServ
 
             MsgServices.setMsg(res);
 
-            $state.go('app');
+            $state.go('app.landing');
 
         }).error(function(err) {
             console.log(err);
@@ -306,7 +306,7 @@ appControllers.controller('LoginController', ['$scope', 'AjaxServices', 'MsgServ
 
     $scope.cancel = function() {
         //console.log('State: ', $state.current.data);
-        $state.go('app');
+        $state.go('app.landing');
     }
 }]);
 
@@ -557,8 +557,8 @@ appControllers.controller('GalleryAppController', ['$scope', function ($scope) {
  * Calendar mini-app
  */
 
-appControllers.controller('CalendarAppController', ['$scope', '$modal', 'AjaxServices', 'DTOptionsBuilder',
-    function($scope, $modal, AjaxServices, DTOptionsBuilder){
+appControllers.controller('CalendarAppController', ['$scope', '$modal', 'AjaxServices', 'DynamicTableServices', 'DynamicPaginationServices',
+    function($scope, $modal, AjaxServices, DynamicTableServices, DynamicPaginationServices){
     $scope.uiConfig = {
         calendar:{
             header: {
@@ -630,11 +630,6 @@ appControllers.controller('CalendarAppController', ['$scope', '$modal', 'AjaxSer
         }
     };
 
-    //var date = new Date();
-    //var d = date.getDate();
-    //var m = date.getMonth();
-    //var y = date.getFullYear();
-
     $scope.events = $scope.events || [];
     $scope.eventSources = [[]];
 
@@ -657,8 +652,15 @@ appControllers.controller('CalendarAppController', ['$scope', '$modal', 'AjaxSer
         })
     };
 
-    $scope.removeEvent = function(id) {
-        console.log(id);
+    $scope.removeEvent = function(index, id) {
+
+        AjaxServices.removeEvent(id).success(function() {
+            $scope.events.splice(index, 1);
+            $scope.eventSources[0].splice(index, 1);
+
+        }).error(function(err) {
+            console.log(err);
+        });
     };
 
     $scope.changeView = function(view){
@@ -681,6 +683,8 @@ appControllers.controller('CalendarAppController', ['$scope', '$modal', 'AjaxSer
         $scope.eventsCalendar.fullCalendar( 'next' );
     };
 
+    $.extend($.fn.dataTableExt.oPagination, DynamicPaginationServices);
+/*
     $.extend( $.fn.dataTableExt.oPagination, {
         "bootstrap": {
             "fnInit": function( oSettings, nPaging, fnDraw ) {
@@ -756,8 +760,10 @@ appControllers.controller('CalendarAppController', ['$scope', '$modal', 'AjaxSer
             }
         }
     } );
+*/
+    $scope.dtOptions = DynamicTableServices([null,null,null, {"bSortable": false}, {"bSortable": false}]);
 
-    //$scope.people = $resource('demo/json/people.json').query();
+    /*
     $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withBootstrap()
         .withOption('sDom', "<'row'<'col-md-6 hidden-xs'l><'col-md-6'f>r>t<'row'<'col-md-6'i><'col-md-6'p>>")
@@ -780,6 +786,7 @@ appControllers.controller('CalendarAppController', ['$scope', '$modal', 'AjaxSer
                 width: 'auto'
             });
         });
+        */
 
     // Init function
     (function() {
@@ -838,13 +845,12 @@ appControllers.controller('ModalInstanceCtrl', ['$scope', '$modalInstance',funct
 appControllers.controller('ImageUploadController', ['$scope', 'AjaxServices', function($scope, AjaxServices) {
     $scope.images = [];
 
-    $("input:file").change(function(event) {
+    $("input:file").change(function() {
         var files = [];
         for ( var i = 0; i < $(this).get(0).files.length; i++ ) {
             files.push($(this).get(0).files[i]);
         }
 
-        console.log(files);
         // create a formdata object
         var formdata = files.reduce(function (formdata, file) {
             formdata.append('data', file);
@@ -959,5 +965,25 @@ appControllers.controller('LandingController', ['$scope', function($scope){
 }]);
 
 /**
- * Dynamic datatable controller
+ * Dynamic datatable controller for service posted
  */
+appControllers.controller('servicePostedCtrl', ['$scope', '$resource', 'DynamicTableServices', 'DynamicPaginationServices',
+    function ($scope, $resource, DynamicTableServices, DynamicPaginationServices) {
+    $.extend( $.fn.dataTableExt.oPagination, DynamicTableServices, DynamicPaginationServices);
+
+    $scope.services = $resource('fake_data/fakePosted.json').query();
+
+    $scope.dtOptions = DynamicTableServices([null,null,{"bSortable": false}, null, null, {"bSortable": false}])
+}]);
+
+/**
+ * Dynamic datatable controller for service used
+ */
+appControllers.controller('serviceUsedCtrl', ['$scope', '$resource', 'DynamicTableServices', 'DynamicPaginationServices',
+    function ($scope, $resource, DynamicTableServices, DynamicPaginationServices) {
+    $.extend( $.fn.dataTableExt.oPagination, DynamicPaginationServices );
+
+    $scope.services = $resource('fake_data/fakeUsed.json').query();
+
+    $scope.dtOptions = DynamicTableServices([null,null,{"bSortable": false}, null, null, {"bSortable": false}]);
+}]);

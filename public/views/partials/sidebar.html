@@ -11,16 +11,14 @@
         <!-- Dashboard -->
         <li>
             <a class="collapsed" data-target="#sidebar-dashboard" data-toggle="collapse" data-parent="#sidebar">
-                    <span class="icon">
-                        <i class="fa fa-desktop"></i>
-                    </span>
+                <span class="icon"><i class="fa fa-desktop"></i></span>
                 Dashboard
                 <i class="toggle fa fa-angle-down"></i>
             </a>
             <ul id="sidebar-dashboard" class="collapse">
                 <li><a data-ui-sref="app.page({ page: 'dashboard', child: null })">Dashboard</a></li>
+                <li><a data-ui-sref="app.page({ page: 'advSearch', child: null })">Advanced Search</a></li>
                 <li><a data-ui-sref="app.page({ page: 'gallery', child: null })">Gallery</a></li>
-                <li><a data-ui-sref="app.page({ page: 'restricted/calendar', child: null })">Calendar</a></li>
                 <li><a data-ui-sref="app.page({ page: 'uploadImages', child: null })">Upload Images</a></li>
             </ul>
         </li>
@@ -28,15 +26,30 @@
         <!-- Registrations -->
         <li>
             <a class="collapsed" data-target="#sidebar-forms" data-toggle="collapse" data-parent="#sidebar">
-                    <span class="icon">
-                        <i class="glyphicon glyphicon-align-right"></i>
-                    </span>
+                <span class="icon"><i class="glyphicon glyphicon-align-right"></i></span>
                 Registrations
                 <i class="toggle fa fa-angle-down"></i>
             </a>
             <ul id="sidebar-forms" class="collapse">
                 <li><a data-ui-sref="app.page({ page: 'seeker', child: null })">Seeker</a></li>
                 <li><a data-ui-sref="app.page({ page: 'provider', child: null })">Provider</a></li>
+            </ul>
+        </li>
+
+        <!-- Services -->
+        <li>
+            <a class="collapsed" data-target="#sidebar-services" data-toggle="collapse" data-parent="#sidebar">
+                <span class="icon"><i class="fa fa-wrench"></i></span>
+                Services
+                <i class="toggle fa fa-angle-down"></i>
+            </a>
+            <ul id="sidebar-services" class="collapse">
+                <li><a data-ui-sref="app.page({ page: 'restricted/calendar', child: null })">
+                    <span class="icon"><i class="glyphicon glyphicon-calendar"></i></span>Calendar</a>
+                </li>
+                <li><a data-ui-sref="app.page({ page: 'restricted/createAds', child: null })">Create Ads</a></li>
+                <li><a data-ui-sref="app.page({ page: 'restricted/servicesPosted', child: null })">Posted Services</a></li>
+                <li><a data-ui-sref="app.page({ page: 'restricted/servicesUsed', child: null })">Past Services</a></li>
             </ul>
         </li>
     </ul>

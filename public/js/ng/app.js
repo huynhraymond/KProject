@@ -23,19 +23,11 @@ var kiddifiedApp = angular.module('kiddifiedApp', [
      'app.directives'
 ]);
 
-kiddifiedApp.run(['AjaxServices', 'MsgServices', 'AuthServices', function(AjaxServices, MsgServices) {
+kiddifiedApp.run(['AjaxServices', 'MsgServices', function(AjaxServices, MsgServices) {
 
     AjaxServices.session().success(function(res) {
         MsgServices.setMsg(res);
     });
-
-/*
-    AuthServices.session();
-    var user = AuthServices.getAuthUser();
-    if (user.username) {
-        console.log(user);
-    }
-    else console.log('Msg: ', user.msg);        */
 }]);
 
 kiddifiedApp.config(function($stateProvider, $urlRouterProvider){
@@ -51,6 +43,11 @@ kiddifiedApp.config(function($stateProvider, $urlRouterProvider){
             templateUrl: 'views/partials/app.html'
         })
 
+        .state('app.landing', {
+            url: '/landing',
+            templateUrl: 'views/partials/landing.html'
+        })
+
         //separate state for login & error pages
         .state('login', {
             url: '/login',
@@ -63,7 +60,7 @@ kiddifiedApp.config(function($stateProvider, $urlRouterProvider){
             templateUrl: 'views/partials/error.html'
         })
 
-        // loading page templates dynamically for demo
+        // loading page templates dynamically
         .state('app.page', {
             url: '/:page/:child',
             params: {

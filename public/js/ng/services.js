@@ -6,7 +6,7 @@
 var appServices = angular.module('app.services', []);
 
 // This is a factory function that will return a service (singleton object)
-appServices.factory('AjaxServices', ['$http', '$q', function($http, $q) {
+appServices.factory('AjaxServices', ['$http', function($http) {
     return {
         register: function (user) {
             return $http.post('/access/register', user);
@@ -30,23 +30,14 @@ appServices.factory('AjaxServices', ['$http', '$q', function($http, $q) {
 
         addEvent: function(obj) {
             return $http.post('/database/event', obj);
-            /*
-            console.log('service:', obj);
-            var xhr = new XMLHttpRequest();
-
-            xhr.open('POST', '/database/newevent');
-
-            xhr.addEventListener('readystatechange', function() {
-                if ( xhr.readyState === 4 ) {
-                    console.log(xhr.responseText);
-                }
-            });
-
-            xhr.send(obj);      */
         },
 
         getAllEvents: function() {
             return $http.get('/database/allevents');
+        },
+
+        removeEvent: function(id) {
+            return $http.delete('/database/removeevent/'+id);
         },
 
         /*
@@ -58,7 +49,6 @@ appServices.factory('AjaxServices', ['$http', '$q', function($http, $q) {
          the browser sets the Content-Type to multipart/form-data for us and fills in the correct boundary.
          Manually setting ‘Content-Type’: multipart/form-data will fail to fill in the boundary parameter of the request.
          */
-
         uploadImage: function(obj) {
             return $http.post('/database/uploadImage', obj, {
                 transformRequest: angular.identity,
@@ -78,44 +68,6 @@ appServices.factory('AjaxServices', ['$http', '$q', function($http, $q) {
                 })
             })
         }       */
-    }
-}]);
-
-appServices.factory('AuthServices', ['AjaxServices', function(AjaxServices) {
-    var authUser = {};
-
-    return {
-        session: function() {
-            AjaxServices.session().success(function(res) {
-                //console.log('User: ', res);
-                authUser.username = res.username;
-                authUser.email = res.email;
-                authUser.tel = res.tel;
-            });
-        },
-
-        login: function() {
-            AjaxServices.login(loginObj).success( function(res) {
-                authUser.username = res.username;
-                authUser.email = res.email;
-                authUser.tel = res.tel;
-
-            }).error(function(err) {
-                authUser = {};
-                authUser.msg = err;
-            });
-        },
-
-        logout: function() {
-            AjaxServices.logout().success(function() {
-                authUser = {};
-                authUser.msg = {status: 'Logout Success'}
-            });
-        },
-
-        getAuthUser: function() {
-            return authUser;
-        }
     }
 }]);
 
@@ -365,3 +317,109 @@ appServices.factory('scriptLoader', ['$q', '$timeout', function($q, $timeout) {
         }
     }
 }]);
+
+appServices.factory('DynamicTableServices', ['DTOptionsBuilder', function(DTOptionsBuilder) {
+    return function(sortArray) {
+        return DTOptionsBuilder.newOptions()
+            .withBootstrap()
+            .withOption('sDom', "<'row'<'col-md-6 hidden-xs'l><'col-md-6'f>r>t<'row'<'col-md-6'i><'col-md-6'p>>")
+            .withOption('oLanguage', {
+                "sLengthMenu": "_MENU_",
+                "sInfo": "Showing <strong>_START_ to _END_</strong> of _TOTAL_ entries"
+            })
+            .withOption('sPaginationType', "bootstrap")
+            .withOption('oClasses', {
+                "sFilter": "pull-right",
+                "sFilterInput": "form-control input-rounded ml-sm",
+                "sWrapper": "dataTables_wrapper form-inline",
+                "sLength": "dataTables_length blahblahcar"
+            })
+            //.withOption('aoColumns', [null,null,{"bSortable": false}, null, null, {"bSortable": false}])
+            .withOption('aoColumns', sortArray)
+            .withOption('initComplete', function(){
+                //bad but creating a separate directive for demo is stupid
+                $(".dataTables_length select").selectpicker({
+                    width: 'auto'
+                });
+            });
+    }
+}]);
+
+appServices.factory('DynamicPaginationServices', function() {
+    return {
+        "bootstrap": {
+            "fnInit": function( oSettings, nPaging, fnDraw ) {
+                var oLang = oSettings.oLanguage.oPaginate;
+                var fnClickHandler = function ( e ) {
+                    e.preventDefault();
+                    if ( oSettings.oApi._fnPageChange(oSettings, e.data.action) ) {
+                        fnDraw( oSettings );
+                    }
+                };
+
+                $(nPaging).append(
+                    '<ul class="pagination no-margin">'+
+                    '<li class="prev disabled"><a href="#">'+oLang.sPrevious+'</a></li>'+
+                    '<li class="next disabled"><a href="#">'+oLang.sNext+'</a></li>'+
+                    '</ul>'
+                );
+                var els = $('a', nPaging);
+                $(els[0]).bind( 'click.DT', { action: "previous" }, fnClickHandler );
+                $(els[1]).bind( 'click.DT', { action: "next" }, fnClickHandler );
+            },
+
+            "fnUpdate": function ( oSettings, fnDraw ) {
+                var iListLength = 5;
+                var oPaging = oSettings.oInstance.fnPagingInfo();
+                var an = oSettings.aanFeatures.p;
+                var i, ien, j, sClass, iStart, iEnd, iHalf=Math.floor(iListLength/2);
+
+                if ( oPaging.iTotalPages < iListLength) {
+                    iStart = 1;
+                    iEnd = oPaging.iTotalPages;
+                }
+                else if ( oPaging.iPage <= iHalf ) {
+                    iStart = 1;
+                    iEnd = iListLength;
+                } else if ( oPaging.iPage >= (oPaging.iTotalPages-iHalf) ) {
+                    iStart = oPaging.iTotalPages - iListLength + 1;
+                    iEnd = oPaging.iTotalPages;
+                } else {
+                    iStart = oPaging.iPage - iHalf + 1;
+                    iEnd = iStart + iListLength - 1;
+                }
+
+                for ( i=0, ien=an.length ; i<ien ; i++ ) {
+                    // Remove the middle elements
+                    $('li:gt(0)', an[i]).filter(':not(:last)').remove();
+
+                    // Add the new list items and their event handlers
+                    for ( j=iStart ; j<=iEnd ; j++ ) {
+                        sClass = (j==oPaging.iPage+1) ? 'class="active"' : '';
+                        $('<li '+sClass+'><a href="#">'+j+'</a></li>')
+                            .insertBefore( $('li:last', an[i])[0] )
+                            .bind('click', function (e) {
+                                e.preventDefault();
+                                oSettings._iDisplayStart = (parseInt($('a', this).text(),10)-1) * oPaging.iLength;
+                                fnDraw( oSettings );
+                            } );
+                    }
+
+                    // Add / remove disabled classes from the static elements
+                    if ( oPaging.iPage === 0 ) {
+                        $('li:first', an[i]).addClass('disabled');
+                    } else {
+                        $('li:first', an[i]).removeClass('disabled');
+                    }
+
+                    if ( oPaging.iPage === oPaging.iTotalPages-1 || oPaging.iTotalPages === 0 ) {
+                        $('li:last', an[i]).addClass('disabled');
+                    } else {
+                        $('li:last', an[i]).removeClass('disabled');
+                    }
+                }
+            }
+        }
+    }
+
+});

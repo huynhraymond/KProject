@@ -39,15 +39,6 @@ router.post('/uploadImage', function(req, res) {
     });     */
 });
 
-router.post('/newevent', function(req, res) {
-    console.log('Backend: ', req.body)
-    (new Calendar(req.body)).save(function(err, result) {
-        if (err) res.status(500).json(err);
-
-        else res.status(201).json(result);
-    });
-});
-
 router.post('/event', function(req, res) {
 
     var calendar = new Calendar(req.body);
@@ -60,6 +51,13 @@ router.post('/event', function(req, res) {
 
 router.get('/allevents', function(req, res) {
     Calendar.find( {}, function(err, result) {
+        if (err) res.status(500).json(err);
+        else res.status(200).json(result);
+    });
+});
+
+router.delete('/removeevent/:id', function(req, res) {
+    Calendar.remove( {utc: req.params.id }, function(err, result) {
         if (err) res.status(500).json(err);
         else res.status(200).json(result);
     });

@@ -34,7 +34,7 @@
                             <td><span class="fw-semi-bold">{{event.title}}</span></td>
                             <td>{{event.description}}</td>
                             <td>
-                                <button class="btn btn-danger btn-sm" ng-click="removeEvent(event.utc)">Remove</button>
+                                <button class="btn btn-danger btn-sm" ng-click="removeEvent($index, event.utc)">Remove</button>
                             </td>
                         </tr>
                         </tbody>
