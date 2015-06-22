@@ -73,6 +73,7 @@ appServices.factory('AjaxServices', ['$http', function($http) {
 
 appServices.factory('MsgServices', function() {
     var msg = {};
+    var generalMsg = '';
 
     return {
         getMsg: function() {
@@ -81,6 +82,14 @@ appServices.factory('MsgServices', function() {
 
         setMsg: function(data) {
             msg = data;
+        },
+
+        setGeneralMsg: function(msg) {
+            generalMsg = msg;
+        },
+
+        getGeneralText: function() {
+            return generalMsg;
         }
     }
 });

@@ -8,7 +8,9 @@
         <div class="widget-controls">
             <a data-widgster="expand" title="Expand" href="#"><i class="glyphicon glyphicon-chevron-up"></i></a>
             <a data-widgster="collapse" title="Collapse" href="#"><i class="glyphicon glyphicon-chevron-down"></i></a>
+            <!--
             <a data-widgster="close" title="Close" href="#"><i class="glyphicon glyphicon-remove"></i></a>
+            -->
         </div>
     </header>
     <div class="widget-body">
@@ -41,7 +43,7 @@
                     </td>
                     <td class="no-sort">{{service.price}}</td>
                     <td class="hidden-xs"><a href="#">{{service.providerName}}</a></td>
-                    <td class="hidden-xs"><a href="/views/_compose.html">{{service.Website}}</a></td>
+                    <td class="hidden-xs"><a data-ui-sref="app.page({ page: 'restricted/compose', child: null })">{{service.Website}}</a></td>
                 </tr>
                 </tbody>
             </table>
