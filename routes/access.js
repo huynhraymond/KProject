@@ -49,7 +49,7 @@ router.post('/validate', function(req, res) {
         from: 'cuxi.huynh@gmail.com',
         to: email,
         subject: req.body.id,
-        text: 'Validation id: ' + req.body.id + ' -> use to continue your registration.'
+        text: 'Passcode id: ' + req.body.id + ' -> use to continue your registration.'
     };
 
     server.send(mailOptions, function(err) {

@@ -317,68 +317,55 @@ appControllers.controller('RegisterController', function($scope, AjaxServices, M
     $scope.registeredUser = {};
     $scope.registeredUser.username = '';
     $scope.registeredUser.password = '';
+    $scope.validationId = undefined;
 
     // Send email out to provided phone and email address to validate user's identity
     $scope.validate = function() {
 
         $scope.registeredUser.tel = $scope.registeredUser.tel.replace(/[^\d]/g, ''); // 4086009999
 
-        /*
-        if ( $scope.registeredUser.tel.length < 10 ) {
-            MsgServices.setMsg({msg: messages.signup.phone});
+        $scope.validationId = createPasscode();
+        //$scope.validationId = 'ABCXYZ';
 
-            return;
-        }
-
-        if ( !$scope.registeredUser.email.indexOf('@') || !$scope.registeredUser.email.indexOf('.') ) {
-            MsgServices.setMsg({msg: messages.signup.email});
-
-            return;
-        }
-        */
-
-        //$scope.validationId = uuid();
-        $scope.validationId = 'ABCXYZ';
         var obj = { tel: $scope.registeredUser.tel,
             email: $scope.registeredUser.email,
             id: $scope.validationId };
 
         AjaxServices.validate(obj).success(function(res) {
-            console.log(res);
-
-            //MsgServices.setMsg({msg: messages.signup.post_validate});
-            //setRegisterValid(true);
+            console.log($scope.validationId);
         });
     };
 
     $scope.register = function() {
-        //$scope.validationId = "5e1e536a-dea4-4bb9-be81-bc648328bb87";
-        //console.log($scope.registeredUser);
-        //var msg = isRegisterValid($scope.registeredUser, $scope.validationId);
-
-        /*
-        // Form Registration Error
-        if ( msg.length > 0 ) {
-            MsgServices.setMsg({msg: msg});
-            return;
-        }
-        */
 
         AjaxServices.register($scope.registeredUser).success(function() {
-            //MsgServices.setMsg({msg: messages.signup.success});
 
             // Redirect to login page
             $state.go('login');
 
         }).error( function(err) {
             console.log(err);
-            //MsgServices.setMsg({msg: err.message});
             return;
         });
     };
 
     $scope.cancel = function() {
-        $state.go('/');
+        $state.go('app.landing');
+    };
+
+    function createPasscode() {
+        var min = 65;           // A
+        var max = min + 25;     // Z
+
+        var passcode = [];
+        for ( var i = 0; i < 6; i++ ) {
+            var random = ~~(Math.random() * (max - min)) + min;
+            var char = String.fromCharCode(random);
+
+            passcode.push(char);
+        }
+
+        return passcode.join('');
     }
 });
 
